@@ -1,21 +1,16 @@
-import React from 'react';
-import Food from './foods';
+import React, {useState} from 'react';
+import foods from './foods';
 
-const DEFAULT_STATE = { allFood: Food, searchTerm: '' };
+export const ThemeContext = React.createContext(foods);
 
-export const ThemeContext = React.createContext(DEFAULT_STATE);
+export default function Provider(props) {
+    const [searchTerm, setSearchTerm] = useState('');
 
-export default class Provider extends React.Component {
-  state = DEFAULT_STATE;
-  searchTermChanged = searchTerm => {
-    this.setState({searchTerm});
-  };
+    
+    return (<ThemeContext.Provider value={{
+                foods,
+                searchTerm,
+                setSearchTerm
+            }}> {props.children} </ThemeContext.Provider>);
 
-  render() {
-    return (
-      <ThemeContext.Provider value={{
-        ...this.state,
-        searchTermChanged: this.searchTermChanged,
-      }}> {this.props.children} </ThemeContext.Provider>);
-  }
 }

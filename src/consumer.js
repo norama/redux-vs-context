@@ -1,29 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {ThemeContext} from './providers';
 
-export default class Consumer extends React.Component {
-  render() {
-    const {children} = this.props;
+export default function Consumer({children}) {
 
-    return (
-      <ThemeContext.Consumer>
-        {({allFood, searchTerm, searchTermChanged}) => {
-          const food = searchTerm
-            ? allFood.filter(
-              food =>
-                food.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
-            )
-            : allFood;
+    const {foods, searchTerm} = useContext(ThemeContext);
 
-          return React.Children.map(children, child =>
+    const food = searchTerm ?
+                    foods.filter(food =>
+                            food.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+                        ) :
+                    foods;
+
+    return (<>
+          {React.Children.map(children, child =>
             React.cloneElement(child, {
               food,
-              searchTerm,
-              searchTermChanged,
+              searchTerm
             })
-          );
-        }}
-      </ThemeContext.Consumer>
-    );
-  }
+          )}
+    </>);
 }

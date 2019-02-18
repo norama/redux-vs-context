@@ -1,17 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
+
+import {ThemeContext} from './providers';
+
 import './App.css';
 
-function App({food, searchTerm, searchTermChanged}) {
+function App({food, searchTerm, setSearchTerm}) {
   return (
     <div>
       <div className="search">
-        <input
-          type="text"
-          name="search"
-          placeholder="Search"
-          value={searchTerm}
-          onChange={e => searchTermChanged(e.target.value)}
-        />
+        <SearchInput searchTerm={searchTerm} />
       </div>
       <table>
         <thead>
@@ -33,6 +30,22 @@ function App({food, searchTerm, searchTermChanged}) {
       </table>
     </div>
   );
+}
+
+function SearchInput({searchTerm}) {
+
+    const { setSearchTerm } = useContext(ThemeContext);
+
+    return(
+        <input
+            type="text"
+            name="search"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+        />
+    );
+
 }
 
 export default App;
